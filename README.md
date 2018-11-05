@@ -1,2 +1,5 @@
 # kaggle_utils
-Helpful python utils for kaggling
+Python utils for kaggle
+
+- `metrics_utils.py`: functions for metrics calculation
+- `lightgbm_utils.py`: LightGBM functions (cross-validation with Out Of Fold predictions and etc.)
