@@ -1,7 +1,7 @@
 # Functions for metrics calculation
 import numpy as np
 import pandas as pd
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, roc_auc_score
 
 # RMSE
 def rmse(y_true, y_pred):
@@ -73,3 +73,8 @@ def gini_lgb(preds, dtrain):
     """
     actuals = np.array(dtrain.get_label()) 
     return 'gini', gini_normalizedc(actuals, preds), True 
+
+# ROC AUC
+def auc_lgb(preds, dtrain):
+    actuals = np.array(dtrain.get_label()) 
+    return 'auc', roc_auc_score(actuals, preds), True
