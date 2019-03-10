@@ -2,11 +2,10 @@
 import gc
 
 import numpy as np
-import pandas as pd
 import lightgbm as lgb
 from sklearn.model_selection import KFold
 
-from metrics_utils import rmse, rmse_lgb
+from kaggle_utils.metrics_utils import rmse, rmse_lgb
 
 kf = KFold(n_splits=5, random_state=7, shuffle=False)
 lgb_regression_params = {
