@@ -1,4 +1,7 @@
 # Functions for working with LightGBM
+# - "lgb_cv_regression" - cross-validation for regression task with metric RMSE
+# - "lgb_cv_multiclass" - cross-validation for multiclass classification task with metric accuracy
+
 import gc
 
 import numpy as np
@@ -120,7 +123,8 @@ def lgb_cv_regression(X_train,
         print('LGBM model trained...')
     
     if X_test is not None:
-        return np.mean(lgb_preds, axis=0), rmse(y_train, y_valid_preds), np.mean(rmses), np.std(rmses), np.mean(best_iterations)
+        return np.mean(lgb_preds, axis=0), rmse(y_train, y_valid_preds), \
+               np.mean(rmses), np.std(rmses), np.mean(best_iterations)
     else:
         return rmse(y_train, y_valid_preds), np.mean(rmses), np.std(rmses), np.mean(best_iterations)
 
