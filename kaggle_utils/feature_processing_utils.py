@@ -1,6 +1,64 @@
 # functions for data processing
+# From my code for Google Analytics Customer Revenue Prediciton kaggle competition
+# https://www.kaggle.com/c/ga-customer-revenue-prediction
+
+from collections import defaultdict
+
 import numpy as np
 import pandas as pd
+
+
+# example of regexps for category feature cleaning (join small groups to large ones)
+keyword_regexps = {
+    '(g(o|oo)gl(|e|r))': 'google',
+    '(y|u)(|o)u( |)t(|u|o|oo)(b|n)(|r|e)': 'youtube',
+    'not provided': '(not provided)',
+    'user vertical targeting': '(user vertical targeting)',
+    'automatic matching': '(automatic matching)',
+    '6qehscssdk0z36ri': '6qehscssdk0z36ri',
+    'remarketing/content targeting': '(remarketing/content targeting)',
+    '1hzbaqlcbjwfgoh7': '1hzbaqlcbjwfgoh7',
+    '1x4me6zknv0zg-jv': '1x4me6zknv0zg-jv',
+    'doubleclick ad exchange': 'doubleclick ad exchange',
+}
+adcontent_regexp = {
+    'google': 'google',
+    '(none)': '(none)',
+    'placement': 'placement',
+    'display': 'display',
+    'ad from': 'ad_from',
+    'image': 'image'
+}
+browser_regexp = {
+    '^chrome$': 'chrome',
+    'safari': 'safari',
+    'firefox': 'firefox',
+    'internet explorer': 'internet_explorer',
+    'android': 'android',
+    'edge': 'edge',
+    'samsung internet': 'samsung_internet',
+    'opera': 'opera',
+    'uc browser': 'uc_browser',
+    'yabrowser': 'yabrowser',
+    'amazon': 'amazon',
+}
+os_regexp = {
+    '^windows$': 'windows',
+    'macintosh': 'macintosh',
+    'android': 'android',
+    'ios': 'ios',
+    'linux': 'linux',
+    'chrome': 'chrome',
+    'not set': '(not_set)',
+    'windows phone': 'windows_phone',
+}
+features_to_handle = {
+    'trafficSource.keyword': keyword_regexps,
+    'trafficSource.adContent': adcontent_regexp,
+
+    'device.browser': browser_regexp,
+    'device.operatingSystem': os_regexp
+}
 
 
 def get_2month_group(month):
@@ -50,7 +108,6 @@ def clean_cat_features(df_, features_to_handle, features_nans):
     """
     df = df_.copy()
     for feature in features_to_handle:
-        #print(features_to_handle[feature])
         df[feature + '_handled'] = df[feature].fillna(features_nans[feature]).str.lower()
         df[feature + '_handled_cut'] = 'other'
         for regexp in features_to_handle[feature]:
@@ -62,8 +119,8 @@ def clean_cat_features(df_, features_to_handle, features_nans):
     return df
 
 
-def cut_unique_values(array, threshold, default_value = 'other'):
-    '''
+def cut_unique_values(array, threshold, default_value='other'):
+    """
     Method cut number of unique values in numpy array
     with frequency lower than threshold - change values to default_value
     Params:
@@ -72,11 +129,11 @@ def cut_unique_values(array, threshold, default_value = 'other'):
         default_value: str
     Returns:
         object_map: dictionary with changed or original values
-    '''
+    """
     uniques, counts = np.unique(array, return_counts=True)
     unique_cnt = dict(zip(uniques, counts))
     
-    object_to_cut= []
+    object_to_cut = []
     object_to_keep = []
     # if frequency lower than threshold - cut this unique value
     for obj in unique_cnt:
@@ -93,12 +150,12 @@ def cut_unique_values(array, threshold, default_value = 'other'):
 
 
 def replace_low_frequency_categories(df_, cut_thresholds):
-    '''
+    """
     Replace low frequency categories to other
     
     Returns:
         df: pandas dataframe with replaced categories
-    '''
+    """
     df = df_.copy()
     
     for feature in cut_thresholds:
@@ -149,7 +206,7 @@ def make_user_aggregates(df, aggregates):
     df_agg = df.groupby(['fullVisitorId'], as_index=False).agg(aggregates)
     # rename multiindex columns with flat column names
     column_names = zip(df_agg.columns.get_level_values(0), df_agg.columns.get_level_values(1))
-    df_agg.columns = [lvl1 +'_'+ lvl2 if lvl2 != '' else lvl1 for lvl1, lvl2 in column_names]
+    df_agg.columns = [lvl1 + '_' + lvl2 if lvl2 != '' else lvl1 for lvl1, lvl2 in column_names]
     
     return df_agg
 
@@ -162,7 +219,7 @@ def make_aggregates(df, groupby_cols, aggregates):
     df_agg = df.groupby(groupby_cols, as_index=False).agg(aggregates)
     # rename multiindex columns with flat column names
     column_names = zip(df_agg.columns.get_level_values(0), df_agg.columns.get_level_values(1))
-    df_agg.columns = [lvl1 +'_'+ lvl2 if lvl2 != '' else lvl1 for lvl1, lvl2 in column_names]
+    df_agg.columns = [lvl1 + '_' + lvl2 if lvl2 != '' else lvl1 for lvl1, lvl2 in column_names]
     
     return df_agg
 
@@ -186,6 +243,7 @@ def get_string_of_categorical_sequences(df_, feature):
         user_strings[user] = user_strings[user].strip()
         
     return user_strings
+
 
 def make_sequence_features(df_, categorical_features):
     """
