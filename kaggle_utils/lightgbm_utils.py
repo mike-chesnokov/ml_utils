@@ -128,7 +128,7 @@ def lgb_cv_regression(X_train,
 lgb_multiclass_params = {
     'boosting': 'gbdt',
     'objective': 'multiclass',
-    'num_class': 54,
+    'num_class': 4,
     'metric': ['multi_logloss', 'multi_error'],
     'is_training_metric': False,
     'seed': 77,
