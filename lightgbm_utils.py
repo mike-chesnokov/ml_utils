@@ -105,7 +105,7 @@ def lgb_cv_regression(X_train,
             print('RMSE  valid',  round(rmse_current, 6))
 
         # make predictions on test dataset
-        if X_test:
+        if X_test is not None:
             lgb_pred = lgb_model.predict(X_test, num_iteration=lgb_model.best_iteration)
             lgb_preds.append(lgb_pred)
         y_valid_preds[valid_index] = y_valid_pred
@@ -119,7 +119,7 @@ def lgb_cv_regression(X_train,
         print('AVG num best iteration: ', np.mean(best_iterations))
         print('LGBM model trained...')
     
-    if X_test:
+    if X_test is not None:
         return np.mean(lgb_preds, axis=0), rmse(y_train, y_valid_preds), np.mean(rmses), np.std(rmses), np.mean(best_iterations)
     else:
         return rmse(y_train, y_valid_preds), np.mean(rmses), np.std(rmses), np.mean(best_iterations)
