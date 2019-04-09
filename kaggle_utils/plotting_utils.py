@@ -49,7 +49,7 @@ def plot_lgb_feature_importance(lgb_model, max_features):
     :param  max_features: number of features to plot
     """
     fig, ax = plt.subplots(figsize=(12, 12))
-    lgb.plot_importance(lgb_model, max_num_features=max_features, height=0.8, ax=ax)
+    lgb.plot_importance(lgb_model, max_num_features=max_features, height=0.8, ax=ax, importance_type='gain')
     ax.grid(False)
     plt.title("LightGBM - Feature Importance", fontsize=20)
     plt.show()
