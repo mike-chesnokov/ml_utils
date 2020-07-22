@@ -28,6 +28,31 @@ def mape_lgb(preds, dtrain):
     return 'mape', mean_absolute_percentage_error(actuals, preds), False
 
 
+# SMAPE
+def symmetric_mean_absolute_percentage_error(y_true, y_pred):
+    """
+    Symmetric Mean Absolute Percentage Error (SMAPE)
+
+    :param y_true: array-like, true values
+    :param y_pred: array-like, predicted values
+    :return: SMAPE
+    """
+    y_true, y_pred = np.array(y_true), np.array(y_pred)
+    return np.mean(np.abs(y_true - y_pred) / (y_true + y_pred + 1))
+
+
+def smape_lgb(preds, dtrain):
+    """
+    Symmetric Mean Absolute Percentage Error (SMAPE) for LightGBM
+
+    :param preds: array, predicted values
+    :param dtrain: lgb.Dataset, true values
+    :return: SMAPE
+    """
+    actuals = np.array(dtrain.get_label())
+    return 'smape', symmetric_mean_absolute_percentage_error(actuals, preds), False
+
+
 # RMSE
 def rmse(y_true, y_pred):
     """

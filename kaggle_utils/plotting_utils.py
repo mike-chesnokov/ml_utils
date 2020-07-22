@@ -53,3 +53,18 @@ def plot_lgb_feature_importance(lgb_model, max_features):
     ax.grid(False)
     plt.title("LightGBM - Feature Importance", fontsize=20)
     plt.show()
+
+
+def plot_box_plot(data, x, y, title, ylabel, xlabel):
+    """
+    Method for plotting seaborn boxplot
+    :param data: pandas DataFrame
+    """
+    fig, ax = plt.subplots(figsize=(15, 6))
+    sns.boxplot(x=x, y=y, data=data)
+    ax.xaxis.set_tick_params(rotation=90)
+    ax.set_title(title)
+    ax.set_ylabel(ylabel)
+    ax.set_xlabel(xlabel)
+    ax.grid(which='major', linestyle='--', linewidth=1, alpha=0.3)
+    plt.show()
