@@ -1,6 +1,5 @@
 # Methods for plotting
 
-
 import numpy as np
 import pandas as pd
 import lightgbm as lgb
@@ -20,6 +19,38 @@ def plot_countplot(data, feature, dimension):
     plt.figure(figsize=(10, 5))
     sns.countplot(x=feature, hue=dimension, data=data)
     plt.title(feature)
+    plt.show()
+
+
+def plot_hist(data, cols_to_plot, xlabel, ylabel, title,
+              min_value, max_value, num_bins=50, percs=None):
+    """
+    Plot hist with percentile vertical lines
+    """
+    bins_ = np.linspace(min_value, max_value, num_bins)
+
+    plt.figure(figsize=(12, 5))
+    for col in cols_to_plot:
+        # plot histograms
+        plt.hist(data[col], bins=bins_, alpha=0.5, label=col)
+        # plot percentile lines
+        if percs is not None:
+            # get colors
+            colors = plt.cm.tab10.colors[:len(percs)]
+            percs_values = {p: {'value': np.percentile(data[col], p),
+                                'color': c}
+                            for (p, c) in zip(percs, colors)}
+            for p in percs_values:
+                plt.axvline(x=percs_values[p]['value'],
+                            label=f"{p} percentile={round(percs_values[p]['value'], 1)}",
+                            alpha=0.5, linestyle='--', linewidth=2,
+                            color=percs_values[p]['color'])
+
+    plt.ylabel(ylabel)
+    plt.xlabel(xlabel)
+    plt.title(title)
+    plt.grid(which='major', linestyle='--', linewidth=1, alpha=0.3)
+    plt.legend()
     plt.show()
 
 
