@@ -26,6 +26,16 @@ def plot_hist(data, cols_to_plot, xlabel, ylabel, title,
               min_value, max_value, num_bins=50, percs=None):
     """
     Plot hist with percentile vertical lines
+
+    :param data: pandas dataframe
+    :param cols_to_plot: list of str
+    :param xlabel: str
+    :param ylabel: str
+    :param title: str
+    :param min_value: float - min value of hist
+    :param max_value: float - max value of hist
+    :param num_bins: int
+    :param percs: list of int, percentiles to plot, ex. [25, 50, 75]
     """
     bins_ = np.linspace(min_value, max_value, num_bins)
 
@@ -69,6 +79,29 @@ def plot_2_hist(data, feature, num_bins):
     plt.hist(data[data['churn'] == 1][feature], bins=bins_, alpha=0.5, label='churn = 1')
     plt.title(feature + ' distribution')
     plt.legend()
+    plt.show()
+
+
+def plot_lines(data, x_col, y_cols_to_plot, xlabel, ylabel, title):
+    """
+    Plot several lines
+
+    :param data: pandas dataframe
+    :param x_col: str - X axe
+    :param y_cols_to_plot: list of str - y axe
+    :param xlabel: str
+    :param ylabel: str
+    :param title: str
+    """
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(15, 6))
+    data.plot(kind='line', x=x_col, y=y_cols_to_plot,
+              ax=ax, alpha=0.7, linewidth=2)
+
+    ax.set_title(title)
+    ax.set_ylabel(ylabel)
+    ax.set_xlabel(xlabel)
+    ax.grid(which='major', linestyle='--', linewidth=1, alpha=0.3)
+    plt.tight_layout()
     plt.show()
 
 
