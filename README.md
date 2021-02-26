@@ -1,5 +1,5 @@
-# kaggle_utils
-Python utils for kaggle
+# ML utils
+Machine Learning Python utils:
 
 - `metrics_utils.py`: functions for metrics calculation;
 - `lightgbm_utils.py`: LightGBM functions (cross-validation with Out Of Fold predictions and etc.);

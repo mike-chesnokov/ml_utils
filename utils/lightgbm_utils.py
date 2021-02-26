@@ -13,7 +13,7 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import KFold
 
-from kaggle_utils.metrics_utils import rmse, rmse_lgb
+from utils.metrics_utils import rmse, rmse_lgb
 
 
 kf = KFold(n_splits=5, random_state=7, shuffle=False)
