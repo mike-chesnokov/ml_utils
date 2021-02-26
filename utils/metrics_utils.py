@@ -130,6 +130,7 @@ def auc_lgb(preds, dtrain):
     actuals = np.array(dtrain.get_label()) 
     return 'auc', roc_auc_score(actuals, preds), True
 
+
 # Average Precision (AP@k) and Mean Average Precision (MAP@k)
 # from https://github.com/benhamner/Metrics/blob/master/Python/ml_metrics/average_precision.py
 
